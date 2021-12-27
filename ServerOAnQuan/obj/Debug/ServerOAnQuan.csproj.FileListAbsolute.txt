@@ -1,0 +1,10 @@
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\bin\Debug\ServerOAnQuan.exe.config
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\bin\Debug\ServerOAnQuan.exe
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\bin\Debug\ServerOAnQuan.pdb
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.csprojAssemblyReference.cache
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.Properties.Resources.resources
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.ServerListen.resources
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.csproj.GenerateResource.cache
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.csproj.CoreCompileInputs.cache
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.exe
+D:\Users\ASUS\source\repos\ServerOAnQuan\ServerOAnQuan\obj\Debug\ServerOAnQuan.pdb
