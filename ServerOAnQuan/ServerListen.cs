@@ -222,6 +222,10 @@ namespace ServerOAnQuan
                             {
                                 SendMove();
                             }
+                            else if (_receiveData.StartsWith("401"))
+                            {
+                                OutGame();
+                            }
                             else if (_receiveData.StartsWith("402"))
                             {
                                 SendResult();
@@ -547,11 +551,63 @@ namespace ServerOAnQuan
                 SendToAllPlayerInRoom(splitData[0], "300");
             }
 
-            public void FinishGame()
+            public void OutGame()
             {
                 _receiveData = _receiveData.Remove(0, 3);
                 string[] stringRemove = { "/**/" };
                 string[] splitData = _receiveData.Split(stringRemove, StringSplitOptions.RemoveEmptyEntries);
+
+                _sql = "select POINT from BANGXEPHANG where USERNAME = '" + _username + "' and GAMECODE = '" + splitData[0] + "'";
+                DoSQLSelectCommand();
+
+                int point = -10;
+
+                if (_dataTable.Rows.Count == 0)
+                {
+                    _sql = "insert into BANGXEPHANG (USERNAME, GAMECODE, POINT) values (";
+                    _sql += "'" + _username + "','" + splitData[0] + "'," + 0 + ")";
+                    _sqlCommand.CommandText = _sql;
+                    _sqlCommand.ExecuteNonQuery();
+
+                }
+                else
+                {
+                    if ((int)_dataTable.Rows[0].ItemArray[0] >= 10)
+                    {
+                        _sql = "update BANGXEPHANG set POINT =  POINT + " + point + " where USERNAME = '" + _username + "' and GAMECODE = '" + splitData[0] + "'";
+                        _sqlCommand.CommandText = _sql;
+                        _sqlCommand.ExecuteNonQuery();
+                    }
+                }
+
+                _sql = "select USERNAME from THONGTINTAIKHOAN where ACCOUNTNAME = '" + splitData[2] + "'";
+                DoSQLSelectCommand();
+
+                string usernamePlayer2 = (string)_dataTable.Rows[0].ItemArray[0];
+
+                _sql = "select POINT from BANGXEPHANG where USERNAME = '" + usernamePlayer2 + "' and GAMECODE = '" + splitData[0] + "'";
+                DoSQLSelectCommand();
+
+                if (_dataTable.Rows.Count == 0)
+                {
+                    _sql = "insert into BANGXEPHANG (USERNAME, GAMECODE, POINT) values (";
+                    _sql += "'" + _username + "','" + usernamePlayer2 + "'," + 10 + ")";
+                    _sqlCommand.CommandText = _sql;
+                    _sqlCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    _sql = "update BANGXEPHANG set POINT =  POINT + " + 10 + " where USERNAME = '" + usernamePlayer2 + "' and GAMECODE = '" + splitData[0] + "'";
+                    _sqlCommand.CommandText = _sql;
+                    _sqlCommand.ExecuteNonQuery();
+                }
+
+                TcpClient tcpClient = (TcpClient)htClient[splitData[2]];
+                StreamWriter sw = new StreamWriter(tcpClient.GetStream());
+
+                string quitGameInfoMessage = "401";
+
+                SendEncryptMessage(quitGameInfoMessage, sw);
             }
 
             public void GetRankList()
@@ -658,6 +714,8 @@ namespace ServerOAnQuan
                 string getRoomInfoMessage = "310";
                 ArrayList arrayList = (ArrayList)htGameRoom[splitData[0]];
                 getRoomInfoMessage += splitData[0] + "/**/" + arrayList[0] + "/**/" + arrayList[1] + "/**/" + "false/**/";
+
+                SendToAllPlayerInRoom(splitData[0], getRoomInfoMessage);
             }
 
             public void Logout()
